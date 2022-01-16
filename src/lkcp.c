@@ -9,16 +9,18 @@
 #include <mswsock.h>
 #include <windows.h>
 #pragma comment(lib, "Ws2_32.lib")
-#define EWOULDBLOCK WSAEWOULDBLOCK
 inline int get_socket_error() { return WSAGetLastError(); }
 #endif
 #if defined(__linux) || defined(__APPLE__)
 #include <fcntl.h>
+#include <errno.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/udp.h>
-inline void closesocket(socket_t fd) { close(fd); }
+typedef struct sockaddr SOCKADDR;
+typedef struct sockaddr_in SOCKADDR_IN;
+inline void closesocket(int fd) { close(fd); }
 inline int get_socket_error() { return errno; }
 #endif
 

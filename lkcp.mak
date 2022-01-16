@@ -16,6 +16,7 @@ MYCFLAGS =
 
 #需要定义的FLAG
 MYCFLAGS += -Wno-sign-compare
+MYCFLAGS += -Wunused-parameter
 
 #c标准库版本
 #gnu99/gnu11/gnu17

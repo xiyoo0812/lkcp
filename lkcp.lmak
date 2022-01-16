@@ -9,7 +9,8 @@ PROJECT_TYPE = "dynamic"
 
 --需要的FLAGS
 FLAGS = {
-    "Wno-sign-compare"
+    "Wno-sign-compare",
+    "Wunused-parameter"
 }
 
 --需要的include目录
