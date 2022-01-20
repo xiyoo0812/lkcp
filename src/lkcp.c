@@ -296,7 +296,7 @@ static int udp_send(lua_State* L) {
         return 2;
     }
     lua_pushinteger(L, send_len);
-    return 3;
+    return 1;
 }
 
 static int udp_recv(lua_State* L) {
