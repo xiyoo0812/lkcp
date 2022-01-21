@@ -29,7 +29,7 @@ thread_mgr:fork(function()
             udp:send(buff, #buff, ip, port)
         else
             if buf ~= "EWOULDBLOCK" then
-                og_debug("udp-svr recv failed: %s", buf)
+                log_debug("udp-svr recv failed: %s", buf)
             end
         end
         thread_mgr:sleep(1000)
@@ -44,28 +44,23 @@ local log_debug     = logger.debug
 local thread_mgr    = quanta.get("thread_mgr")
 
 local udp = lkcp.udp()
-local ok, err = udp:listen("127.0.0.1", 8600)
-log_debug("udp-svr listen: %s-%s", ok, err)
 thread_mgr:fork(function()
     local index = 0
+    local cdata = "client send 0!"
+    udp:send(cdata, #cdata, "127.0.0.1", 8600)
     while true do
-        local index = 0sss
-        local cdata = "client send 0!"
-        udp:send(cdata, #cdata, "127.0.0.1", 8600)
-        while true do
-            local ok, buf, ip, port = udp:recv()
-            if ok then
-                index = index + 1
-                log_debug("udp-cli recv: %s from %s:%s", buf, ip, port)
-                local buff = string.format("client send %s", index)
-                udp:send(buff, #buff, ip, port)
-            else
-                if buf ~= "EWOULDBLOCK" then
-                    log_debug("udp-cli recv failed: %s", buf)
-                end
+        local ok, buf, ip, port = udp:recv()
+        if ok then
+            index = index + 1
+            log_debug("udp-cli recv: %s from %s:%s", buf, ip, port)
+            local buff = string.format("client send %s", index)
+            udp:send(buff, #buff, ip, port)
+        else
+            if buf ~= "EWOULDBLOCK" then
+                log_debug("udp-cli recv failed: %s", buf)
             end
-            thread_mgr:sleep(1000)
         end
+        thread_mgr:sleep(1000)
     end
 end)
 ```
