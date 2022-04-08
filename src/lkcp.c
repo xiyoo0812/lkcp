@@ -1,4 +1,4 @@
-
+#define LUA_LIB
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
@@ -30,12 +30,6 @@ inline int get_socket_error() { return errno; }
 #include "lualib.h"
 #include "lauxlib.h"
 
-#ifdef _MSC_VER
-#define LKCP_API _declspec(dllexport)
-#else
-#define LKCP_API 
-#endif
-#
 #define RECV_BUFF_LEN   1024*1024
 #define LUA_UDP_META    "_LUA_UDP_META"
 #define LUA_KCP_META    "_LUA_KCP_META"
@@ -378,7 +372,7 @@ static const struct luaL_Reg lkcplib_funcs[] = {
     {NULL, NULL},
 };
 
-LKCP_API int luaopen_lkcp(lua_State* L) {
+LUALIB_API int luaopen_lkcp(lua_State* L) {
 #ifdef _MSC_VER
     WORD    wVersion = MAKEWORD(2, 2);
     WSADATA wsaData;
